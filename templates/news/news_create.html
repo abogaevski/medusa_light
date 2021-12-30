@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Добавить новость | {{ block.super }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="d-flex flex-column w-100">
+            <h1 class="text-uppercase mb-5 text-center">Добавить новость</h1>
+            <form class="form" id="news_create" action="POST">
+                {% csrf_token %}
+                <label class="w-100">
+                    <span class="text-bold">Тема</span>
+                    <input name="subject" class="form-control mb-2" type="text">
+                </label>
+                <label class="w-100">
+                    <span class="text-bold">Дата публикации</span>
+                    <input name="pubDate" class="form-control mb-2" type="date">
+                </label>
+                <label class="w-100">
+                    <span class="text-bold">Текст</span>
+                    <textarea name="content" class="form-control mb-2" rows="3"></textarea>
+                </label>
+                <button class="btn btn-primary">Добавить</button>
+            </form>
+            <div class="row mt-5 g-1">
+                <h2>Ваши новости:</h2>
+                {% for item in news %}
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.subject }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ item.pub_date }}</h6>
+                                <p class="card-text">{{ item.content }}</p>
+                              </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+    const form = document.querySelector('#news_create')
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const subject = form['subject'].value;
+        const pubDate = form['pubDate'].value;
+        const content = form['content'].value;
+
+        const formData = {
+            subject,
+            pubDate,
+            content
+        };
+        postData("{% url 'news_create_api_url' %}", formData, csrftoken)
+          .then((data) => {
+            alert(`Новость "${data.subject}" создана`);
+            document.location.reload();
+          });
+    })
+
+    </script>
+{% endblock %}

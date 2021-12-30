@@ -16,7 +16,7 @@
                 </label>
                 <label class="w-100">
                     <span class="text-bold">Дата публикации</span>
-                    <input name="pubDate" class="form-control mb-2" type="date">
+                    <input name="date" class="form-control mb-2" type="date">
                 </label>
                 <label class="w-100">
                     <span class="text-bold">Текст</span>
@@ -31,7 +31,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">{{ item.subject }}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">{{ item.pub_date }}</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ item.date }}</h6>
                                 <p class="card-text">{{ item.content }}</p>
                               </div>
                         </div>
@@ -46,12 +46,12 @@
         event.preventDefault();
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
         const subject = form['subject'].value;
-        const pubDate = form['pubDate'].value;
+        const date = form['date'].value;
         const content = form['content'].value;
 
         const formData = {
             subject,
-            pubDate,
+            date,
             content
         };
         postData("{% url 'news_create_api_url' %}", formData, csrftoken)

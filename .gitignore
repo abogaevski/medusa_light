@@ -90,3 +90,4 @@ db.sqlite3
 celerybeat-schedule.db
 .idea
 /media
+/medusa_light.cer
